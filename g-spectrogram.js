@@ -12,13 +12,20 @@ Polymer('g-spectrogram', {
   // FFT bin size,
   fftsize: 2048,
   oscillator: false,
-  color: false,
+  mincolor: 'rgb(255, 255, 255)',
+  maxcolor: 'rgb(0, 0, 0)',
+  tickcolor: 'rgb(0, 0, 0)',
 
   attachedCallback: function() {
-    this.tempCanvas = document.createElement('canvas'),
+    this.tempCanvas = document.createElement('canvas'); 
     console.log('Created spectrogram');
     // Get input from the microphone.
-    if (navigator.mozGetUserMedia) {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices
+        .getUserMedia({audio: true})
+        .then(this.onStream.bind(this))
+        .catch(this.onStreamError.bind(this))
+    } else if (navigator.mozGetUserMedia) {
       navigator.mozGetUserMedia({audio: true},
                                 this.onStream.bind(this),
                                 this.onStreamError.bind(this));
@@ -30,6 +37,7 @@ Polymer('g-spectrogram', {
                                 this.onStream.bind(this),
                                 this.onStreamError.bind(this));
     }
+
     this.ctx = this.$.canvas.getContext('2d');
   },
 
@@ -105,7 +113,7 @@ Polymer('g-spectrogram', {
         value = freq[i];
       }
 
-      ctx.fillStyle = (this.color ? this.getFullColor(value) : this.getGrayColor(value));
+      ctx.fillStyle = this.lerpColor(this.mincolor, this.maxcolor, value);
 
       var percent = i / freq.length;
       var y = Math.round(percent * this.height);
@@ -150,6 +158,9 @@ Polymer('g-spectrogram', {
     var endFreq = nyquist - startFreq;
     var step = (endFreq - startFreq) / this.ticks;
     var yLabelOffset = 5;
+
+    ctx.fillStyle = this.tickcolor;
+
     // Render the vertical frequency axis.
     for (var i = 0; i <= this.ticks; i++) {
       var freq = startFreq + (step * i);
@@ -169,6 +180,7 @@ Polymer('g-spectrogram', {
       var label = this.formatFreq(freq);
       var units = this.formatUnits(freq);
       ctx.font = '16px Inconsolata';
+
       // Draw the value.
       ctx.textAlign = 'right';
       ctx.fillText(label, x, y + yLabelOffset);
@@ -228,6 +240,19 @@ Polymer('g-spectrogram', {
 
   getGrayColor: function(value) {
     return 'rgb(V, V, V)'.replace(/V/g, 255 - value);
+  },
+
+  lerpColor: function(a, b, value) { 
+    var amount = value / 255;
+    var ah = +a.replace('#', '0x'),
+        ar = ah >> 16, ag = ah >> 8 & 0xff, ab = ah & 0xff,
+        bh = +b.replace('#', '0x'),
+        br = bh >> 16, bg = bh >> 8 & 0xff, bb = bh & 0xff,
+        rr = ar + amount * (br - ar),
+        rg = ag + amount * (bg - ag),
+        rb = ab + amount * (bb - ab);
+
+    return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
   },
 
   getFullColor: function(value) {
