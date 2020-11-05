@@ -1,6 +1,7 @@
 body, html {
   margin: 0;
   padding: 0;
+  background-color: #192174;
 }
 
 #about {
@@ -16,4 +17,5 @@ body, html {
   width: 500px;
   font-family: 'Inconsolata';
   font-size: 120%;
+  color: #eeed89;
 }
