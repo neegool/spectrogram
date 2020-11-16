@@ -19,3 +19,7 @@ body, html {
   font-size: 120%;
   color: #fff;
 }
+
+#link {
+  display: hidden;
+}
