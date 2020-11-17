@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
-    <g-spectrogram labels log oscillator speed=1 ticks=3 tickcolor="#ffffff" mincolor="#f8a950", maxcolor="#ffffff"></g-spectrogram>
+    <g-spectrogram id="spectrogram" labels log oscillator speed=1 ticks=3 tickcolor="#ffffff" mincolor="#f8a950", maxcolor="#ffffff"></g-spectrogram>
 
     <div id="instructions">
       <h2>Spectrogram & Oscillator</h2>
@@ -16,6 +16,11 @@
       <li>^ Allow use of your microphone ^</li>
       <li>Click or tap anywhere canvas to generate a tone</li>
     </ol>
+    </div>
+
+    <div id ="controls">
+      <button onclick="openFullscreen();">F</button>
+      <a href="color2.html">Color 2</a>
     </div>
 
     <script>
@@ -27,5 +32,6 @@ context = new AudioContext();
 //   location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
 // }
     </script> 
+    <script src="fullscreen.js"></script>
   </body>
 </html>

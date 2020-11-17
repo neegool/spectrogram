@@ -1,10 +1,10 @@
-body, html {
+body, html, #spectrogram {
   margin: 0;
   padding: 0;
   background-color: #192174;
 }
 
-#about {
+#controls {
   position: absolute;
   left: 10px;
   bottom: 10px;
@@ -18,8 +18,4 @@ body, html {
   font-family: 'Inconsolata';
   font-size: 120%;
   color: #fff;
-}
-
-#link {
-  display: hidden;
 }

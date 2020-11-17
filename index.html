@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
-    <g-spectrogram labels log oscillator speed=1 ticks=3 tickcolor="#ffffff" mincolor="#192174", maxcolor="#ffffff"></g-spectrogram>
+    <g-spectrogram id="spectrogram" labels log oscillator speed=1 ticks=3 tickcolor="#ffffff" mincolor="#192174", maxcolor="#ffffff"></g-spectrogram>
 
     <div id="instructions">
       <h2>Spectrogram & Oscillator</h2>
@@ -18,7 +18,8 @@
     </ol>
     </div>
 
-    <div id ="link">
+    <div id ="controls">
+      <button onclick="openFullscreen();">F</button>
       <a href="color2.html">Color 2</a>
     </div>
 
@@ -30,6 +31,7 @@ context = new AudioContext();
 // if (location.protocol != 'https:') {
 //   location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
 // }
-    </script> 
+    </script>
+    <script src="fullscreen.js"></script>
   </body>
 </html>
